@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TelegrafModule } from 'nestjs-telegraf';
 import { ConfigModule } from '@nestjs/config';
+import { BotUpdate } from './bot/bot-update';
 
 @Module({
 	imports: [
@@ -12,6 +13,6 @@ import { ConfigModule } from '@nestjs/config';
 		}),
 	],
 	controllers: [AppController],
-	providers: [AppService],
+	providers: [AppService, BotUpdate],
 })
 export class AppModule {}
