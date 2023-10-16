@@ -20,6 +20,11 @@ export class BotUpdate {
 		await ctx.reply('Welcome');
 	}
 
+	@Hears('Привет')
+	handleGreeting(ctx: TelegrafContext) {
+		ctx.reply('Здравствуйте! Как я могу вам помочь?');
+	}
+
 	@Email(/.*@company\.com/)
 	async support(@Ctx() ctx: TelegrafContext) {
 		await ctx.reply('Ма отприм настроки на support@company.com');
