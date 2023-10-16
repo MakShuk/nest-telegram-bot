@@ -1,4 +1,15 @@
-import { Update, Ctx, Start, Help, Hears, On, Cashtag, Command, InjectBot } from 'nestjs-telegraf';
+import {
+	Update,
+	Ctx,
+	Start,
+	Help,
+	Hears,
+	On,
+	Cashtag,
+	Command,
+	InjectBot,
+	Email,
+} from 'nestjs-telegraf';
 import { Telegraf, Context as TelegrafContext } from 'telegraf';
 
 @Update()
@@ -7,6 +18,11 @@ export class BotUpdate {
 	@Start()
 	async start(@Ctx() ctx: TelegrafContext) {
 		await ctx.reply('Welcome');
+	}
+
+	@Email(/.*@company\.com/)
+	async support(@Ctx() ctx: TelegrafContext) {
+		await ctx.reply('Ма отприм настроки на support@company.com');
 	}
 
 	@Help()
