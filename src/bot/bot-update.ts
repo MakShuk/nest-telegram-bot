@@ -9,6 +9,9 @@ import {
 	Command,
 	InjectBot,
 	Email,
+	Message,
+	Next,
+	Sender,
 } from 'nestjs-telegraf';
 import { Telegraf, Context as TelegrafContext } from 'telegraf';
 
@@ -26,8 +29,9 @@ export class BotUpdate {
 	}
 
 	@Email(/.*@company\.com/)
-	async support(@Ctx() ctx: TelegrafContext) {
+	async support(@Ctx() ctx: TelegrafContext, @Next() next: any) {
 		await ctx.reply('Ма отприм настроки на support@company.com');
+		return next();
 	}
 
 	@Help()
@@ -41,8 +45,13 @@ export class BotUpdate {
 	}
 
 	@On('text')
-	async on(@Ctx() ctx: TelegrafContext) {
-		console.log(ctx.message);
+	async on(
+		@Ctx() ctx: TelegrafContext,
+		@Message() message: any,
+		@Sender('first_name') senderId: number,
+	) {
+		console.log(message);
+		console.log('name', senderId);
 		if (ctx.message && 'text' in ctx.message) {
 			ctx.message.text.includes('spam') ? await ctx.reply('No Spam') : await ctx.reply('OK');
 		}
