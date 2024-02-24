@@ -2,7 +2,7 @@ export interface IPost {
 	id: number;
 	title: string;
 	originalTitle: string;
-	content: string;
+	content: string[];
 	ratio: number;
 	published: boolean;
 	resourceId: number;

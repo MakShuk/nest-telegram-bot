@@ -1,9 +1,13 @@
 import { Body, Controller, Get, HttpException, HttpStatus } from '@nestjs/common';
 import { BotService } from './bot.service';
 import cron from 'node-cron';
+import { OnModuleInit } from '@nestjs/common';
 
 @Controller('bot')
-export class BotController {
+export class BotController implements OnModuleInit {
+	onModuleInit() {
+		this.cronAction();
+	}
 	constructor(private readonly botService: BotService) {}
 
 	@Get('last-post')
@@ -37,7 +41,8 @@ export class BotController {
 
 	@Get('cron')
 	async cronAction() {
-		cron.schedule('*/10 * * * *', async () => {
+		console.log('Задача Cron была запущена');
+		cron.schedule('*/1 * * * *', async () => {
 			const action = await this.botService.fullPostAction();
 			console.log(action.content);
 		});

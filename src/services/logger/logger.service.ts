@@ -44,6 +44,7 @@ export class LoggerService {
 			.toString()
 			.padStart(2, '0');
 		const seconds = (totalSeconds % 60).toString().padStart(2, '0');
-		return `Время выполнения скрипта: ${minutes}:${seconds}`;
+		return `Script execution time: ${minutes}:${seconds}`;
 	}
 }
+

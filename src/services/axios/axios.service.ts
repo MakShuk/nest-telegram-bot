@@ -1,17 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import axios, { AxiosError } from 'axios';
 
-interface CustomError extends AxiosError {
-	response: any;
-}
-
 @Injectable()
 export class AxiosService {
-	async req<TData, TReturn>(
-		url: string,
-		data: TData,
-		method?: 'POST' | 'GET',
-	): Promise<{ content: string; error: boolean; data?: TReturn }> {
+	async req<RequestBody, ResponseType>({
+		url,
+		data,
+		method,
+	}: {
+		url: string;
+		data: RequestBody;
+		method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+	}): Promise<{ content: string; error: boolean; data?: ResponseType }> {
 		try {
 			const response = await axios({
 				url,
@@ -23,12 +23,12 @@ export class AxiosService {
 				error: false,
 				data: response.data,
 			};
-		} catch (error) {
-			let customError: CustomError;
-			if (error && (error as CustomError).response) {
-				customError = error as CustomError;
-				const { message } = customError.response.data;
-				return { content: `Axios GET error: ${message}`, error: true };
+		} catch (error: AxiosError | any) {
+			if (error.response) {
+				return {
+					content: `Axios GET error: ${error.response.data}`,
+					error: true,
+				};
 			}
 			return { content: `Axios GET error: ${error}`, error: true };
 		}

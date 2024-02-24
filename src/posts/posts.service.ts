@@ -40,4 +40,22 @@ export class PostsService {
 			return { content: `error add id: ${error}`, error: true };
 		}
 	}
+
+	async checkPostId(postId: number) {
+		try {
+			const post = await this.prisma.post.findUnique({
+				where: {
+					post_id: postId,
+				},
+			});
+			if (post) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (error) {
+			console.error(`Error checking post ID: ${error}`);
+			return false;
+		}
+	}
 }
