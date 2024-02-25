@@ -11,7 +11,7 @@ export class BotController implements OnModuleInit {
 	constructor(private readonly botService: BotService) {}
 
 	@Get('last-post')
-	async findLatstPosts() {
+	async findLastPosts() {
 		const createPost = await this.botService.getNewPost();
 		if (createPost.error) {
 			throw new HttpException(`${createPost.content}`, HttpStatus.INTERNAL_SERVER_ERROR);
