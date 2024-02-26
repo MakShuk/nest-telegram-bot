@@ -13,7 +13,7 @@ export interface IPost {
 	updatedAt: Date;
 }
 
-export interface IPostResponce {
+export interface IPostResponse {
 	content: string;
 	error: boolean;
 	data?: IPost[];

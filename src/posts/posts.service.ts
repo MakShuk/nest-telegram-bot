@@ -7,7 +7,7 @@ import { ResponseData } from './posts.interface';
 export class PostsService {
 	constructor(private prisma: PrismaService) {}
 
-	async findLatstPosts(limit = 50): Promise<ResponseData<Post[]>> {
+	async findLastPosts(limit = 50): Promise<ResponseData<Post[]>> {
 		try {
 			const lastPosts = await this.prisma.post.findMany({
 				orderBy: { id: 'desc' },

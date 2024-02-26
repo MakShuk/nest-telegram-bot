@@ -14,5 +14,4 @@ export class AppController {
 	getHelloRoute(): string {
 		return 'Hello from route!';
 	}
-}		
- 
+}

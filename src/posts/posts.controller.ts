@@ -8,15 +8,14 @@ import {
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 
-
 @Controller('posts')
 export class PostsController {
 	constructor(private readonly postsService: PostsService) {}
 
 	@Get('last-id')
 	@UsePipes(new ValidationPipe({ whitelist: true }))
-	async findLatstPosts() {
-		const createPost = await this.postsService.findLatstPosts();
+	async findLastPosts() {
+		const createPost = await this.postsService.findLastPosts();
 		if (createPost.error) {
 			throw new HttpException(`${createPost.content}`, HttpStatus.INTERNAL_SERVER_ERROR);
 		}

@@ -18,15 +18,3 @@ import { BotModule } from './bot/bot.module';
 	providers: [AppService, BotUpdate],
 })
 export class AppModule {}
-
-
-
-
-
-
-
-
-
-
-
-

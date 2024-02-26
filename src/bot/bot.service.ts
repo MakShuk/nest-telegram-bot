@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PostsService } from 'src/posts/posts.service';
 import { AxiosService } from 'src/services/axios/axios.service';
-import { IPostResponce } from './bot.interface';
+import { IPostResponse } from './bot.interface';
 import { InjectBot } from 'nestjs-telegraf';
 import { Telegraf } from 'telegraf';
 import { Context as TelegrafContext } from 'telegraf';
@@ -44,9 +44,9 @@ export class BotService {
 
 			this.postsService.savePostsId(newId);
 
-			return { content: `fullPostAcrion завершено`, error: false };
+			return { content: `fullPostAction завершено`, error: false };
 		} catch (error) {
-			return { content: `Ошибка fullPostAcrion: ${error}`, error: true };
+			return { content: `Ошибка fullPostAction: ${error}`, error: true };
 		}
 	}
 
@@ -56,14 +56,14 @@ export class BotService {
 			const baseUrl = process.env.BASE_URL;
 			if (!baseUrl) throw new Error('No base url, check .env file');
 			const url = `${baseUrl}?limit=${limit}`;
-			const lastId = await this.postsService.findLatstPosts();
+			const lastId = await this.postsService.findLastPosts();
 			if (lastId.error || !lastId.data) throw new Error(lastId.content);
 
 			const postIds = lastId.data.map(obj => obj.post_id);
-			const responce: IPostResponce = await this.axios.req({ url, data: [] });
-			if (responce.error || !responce.data) throw new Error(lastId.content);
+			const response: IPostResponse = await this.axios.req({ url, data: [] });
+			if (response.error || !response.data) throw new Error(lastId.content);
 
-			const filteredPosts = responce.data.filter(post => !postIds.includes(post.id));
+			const filteredPosts = response.data.filter(post => !postIds.includes(post.id));
 
 			return { content: `Get new post`, error: false, data: filteredPosts };
 		} catch (error) {
@@ -108,9 +108,15 @@ export class BotService {
 	) {
 		const sendMessageStatus = await this.sendImageToChat(chat_id, imageUrl, posts);
 		if (sendMessageStatus.error) {
-			if (sendMessageStatus.content.includes('message caption is too long') && posts.content.length > 1) {
+			if (
+				sendMessageStatus.content.includes('message caption is too long') &&
+				posts.content.length > 1
+			) {
 				console.log('Сообщение слишком длинное');
-				await this.sendImageToChat(chat_id, imageUrl, { ...posts, content: posts.content.slice(0, -1) });
+				await this.sendImageToChat(chat_id, imageUrl, {
+					...posts,
+					content: posts.content.slice(0, -1),
+				});
 			} else {
 				return { content: `Ошибка отправки сообщения ${sendMessageStatus.content}`, error: true };
 			}
