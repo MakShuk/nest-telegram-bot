@@ -30,7 +30,7 @@ export class LoggerService {
 		this.logger.trace(...args);
 	}
 
-	async measureExecutionTime(callback: () => Promise<void>): Promise<any> {
+	async measureExecutionTime<T>(callback: () => Promise<T>): Promise<T> {
 		const start = performance.now();
 		const result = await callback();
 		const end = performance.now();
@@ -47,4 +47,3 @@ export class LoggerService {
 		return `Script execution time: ${minutes}:${seconds}`;
 	}
 }
-
