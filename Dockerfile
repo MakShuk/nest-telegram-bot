@@ -24,6 +24,10 @@ RUN npm install --only=prod
 COPY --from=build /opt/app/dist  ./dist
 # Копируем файл .env из предыдущего этапа в текущий контейнер
 COPY --from=build /opt/app/.env  ./
+# Копируем файл prisma из предыдущего этапа в текущий контейнер 
+COPY --from=build /opt/app/prisma  ./prisma
+# Создаем миграцию
+RUN npx prisma generate
 # Запускаем приложение
 CMD [ "node", "./dist/main.js" ]
 
