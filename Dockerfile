@@ -19,7 +19,7 @@ WORKDIR /opt/app
 # Копируем файл package.json в рабочую директорию
 ADD package.json ./
 # Устанавливаем только продакшн-зависимости
-RUN npm install --only=prod
+RUN npm install --only=prod --legacy-peer-deps
 # Копируем собранный код из предыдущего этапа в директорию dist текущего контейнера
 COPY --from=build /opt/app/dist  ./dist
 # Копируем файл .env из предыдущего этапа в текущий контейнер

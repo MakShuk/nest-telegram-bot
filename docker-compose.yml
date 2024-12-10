@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     container_name: telegram_new_bot
     ports:
-      - 3004:3004
+      - 3006:3006
     restart: always
     networks:
       - home
